@@ -1,7 +1,7 @@
 Feather
 =========
 
-Feather is an extremely lightweight publish-subscribe message broker (event bus). It supports both topic (through types) and content (through a predicate) based filtering. The goal of Feater P/S is to maximize message throughput.
+Feather is an extremely lightweight publish-subscribe message broker (event bus). It supports both topic (through types) and content (through a predicate) based filtering. The goal of Feater is to maximize message throughput.
 
 Table of contents:
 + [Features](#features)
