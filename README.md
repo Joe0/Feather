@@ -1,7 +1,7 @@
 Feather
 =========
 
-Feather is an extremely lightweight publish-subscribe message broker (event bus). It supports both topic (through types) and content (through a predicate) based filtering. The goal of Feater is to maximize message throughput.
+Feather is an extremely lightweight publish-subscribe message broker (event bus). It supports both topic (through types) and content (through a predicate) based filtering. The goal of Feather is to maximize message throughput.
 
 Table of contents:
 + [Features](#features)
@@ -12,7 +12,7 @@ Table of contents:
 
 + <strong>Strategy based</strong> Allows you to provide strategies to specify how the broker does things. This allows you to optimize for different things by simply changing how you create the broker.
 + <strong>Asynchronous</strong> Everything can run asynchronously, as well as synchronously. Just provide a strategy that does what you want.
-+ <strong>Filters</strong> A simple yet flexible filter system. Every subscriber is fitered by types, and it is optionally filtered by a predicate. All you need to do is implement the PredicatedSubscriber class and the applies method.
++ <strong>Filters</strong> A simple yet flexible filter system. Every subscriber is filtered by types, and it is optionally filtered by a predicate. All you need to do is implement the PredicatedSubscriber class and the applies method.
 + <strong>Unread messages</strong> Catch any message that was not received by a subscriber just by creating a subscriber that listens for UnreadMessage.
 + <strong>Lightweight</strong> Feather is extremely lightweight and doesn't bring in any bloat, redundant concepts or confusing features.
 + <strong>Fast</strong> Faster than other publish-subscribe frameworks by orders of magnitude. Check out the <a href="http://www.joepritzel.com/blog/publish-subscribe" target="_blank">case study</a>.
