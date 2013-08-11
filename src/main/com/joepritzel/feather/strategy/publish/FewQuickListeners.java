@@ -10,6 +10,13 @@ import com.joepritzel.feather.UnreadMessage;
 import com.joepritzel.feather.internal.Publish;
 import com.joepritzel.feather.internal.SubscriberParent;
 
+/**
+ * This publish strategy is optimized for few listeners that are not
+ * computationally expensive.
+ * 
+ * @author Joe Pritzel
+ * 
+ */
 public class FewQuickListeners implements PublishStrategy {
 
 	/**
@@ -23,6 +30,13 @@ public class FewQuickListeners implements PublishStrategy {
 	 */
 	private final boolean considerHierarchy;
 
+	/**
+	 * @param exec
+	 *            - The executor to be used.
+	 * @param considerHierarchy
+	 *            - If the class hierarchy should be considered when determining
+	 *            types a subscriber is subscribed to.
+	 */
 	public FewQuickListeners(Executor exec, boolean considerHierarchy) {
 		this.exec = exec;
 		this.considerHierarchy = considerHierarchy;
@@ -46,11 +60,15 @@ public class FewQuickListeners implements PublishStrategy {
 		});
 	}
 
-	@Override
-	public void invokeReceiveO(Subscriber<?> s, Object msg) {
-		s.receiveO(msg);
-	}
-
+	/**
+	 * Iterates through the subscribers, considering the type hierarchy, and
+	 * invokes the receiveO method.
+	 * 
+	 * @param p
+	 *            - The publish object.
+	 * @return If a message was published to at least one subscriber, then it
+	 *         will return true. Otherwise, false.
+	 */
 	private boolean consideringHierarchy(Publish p) {
 		boolean sent = false;
 		for (Entry<Class<?>, List<SubscriberParent>> e : p.mapping.entrySet()) {
@@ -59,7 +77,7 @@ public class FewQuickListeners implements PublishStrategy {
 					if (!predicateApplies(parent.getSubscriber(), p.message)) {
 						continue;
 					}
-					invokeReceiveO(parent.getSubscriber(), p.message);
+					parent.getSubscriber().receiveO(p.message);
 					sent = true;
 				}
 			}
@@ -67,6 +85,14 @@ public class FewQuickListeners implements PublishStrategy {
 		return sent;
 	}
 
+	/**
+	 * Iterates through the subscribers invoking the receiveO method.
+	 * 
+	 * @param p
+	 *            - The publish object.
+	 * @return If a message was published to at least one subscriber, then it
+	 *         will return true. Otherwise, false.
+	 */
 	private boolean normal(Publish p) {
 		boolean sent = false;
 		List<SubscriberParent> list = p.mapping.get(p.message.getClass());
@@ -78,12 +104,24 @@ public class FewQuickListeners implements PublishStrategy {
 			if (!predicateApplies(s, p.message)) {
 				continue;
 			}
-			invokeReceiveO(s, p.message);
+			s.receiveO(p.message);
 			sent = true;
 		}
 		return sent;
 	}
 
+	/**
+	 * Checks to see if the subscriber is a predicated subscriber, and if it
+	 * applies.
+	 * 
+	 * @param s
+	 *            - The subscriber to check.
+	 * @param message
+	 *            - The message to check.
+	 * @return If the subscriber is not predicated or it is and applies, then it
+	 *         returns true. If it's a predicated subscriber, and it doesn't
+	 *         apply, then it returns false.
+	 */
 	private boolean predicateApplies(Subscriber<?> s, Object message) {
 		if (s instanceof PredicatedSubscriber
 				&& !((PredicatedSubscriber<?>) s).appliesO(message)) {

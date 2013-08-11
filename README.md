@@ -14,13 +14,15 @@ Table of contents:
 + <strong>Filters</strong> A simple yet flexible filter system. Every subscriber is fitered by types, and it is optionally filtered by a predicate. All you need to do is implement the PredicatedSubscriber class and the applies method.
 + <strong>Unread messages</strong> Catch any message that was not received by a subscriber just by creating a subscriber that listens for UnreadMessage.
 + <strong>Lightweight</strong> Feather is extremely lightweight and doesn't bring in any bloat, redundant concepts or confusing features.
++ <strong>Strategy based</strong> Allows you to provide strategies to specify how the broker does things. This allows you to optimize for different things by simply changing how you create the broker.
 + <strong>Fast</strong> Faster than other publish-subscribe frameworks by orders of magnitude. Check out the <a href="http://www.joepritzel.com/blog/publish-subscribe" target="_blank">case study</a>.
 
 <h2 name="usage">Usage</h2>
 How to create the publish-subscribe message broker and set up for use:
 ```Java
-// Provide an appropriate executor based on your needs, and you're done.
-PSBroker broker = new PSBroker(Executors.newCachedThreadPool());
+// Use a builder to create a new PSBroker.
+// The build allows you to provide customizable strategies for the broker to use.
+PSBroker broker = new PSBrokerBuilder().build();
 ```  
 Example of how to create a subscriber:
 ```Java
@@ -41,10 +43,9 @@ broker.publish("Hello world!");
 ```
 Example application that counts to 100:
 ```Java
-import java.util.concurrent.Executors;
-
-import com.joepritzel.featherps.PSBroker;
-import com.joepritzel.featherps.Subscriber;
+import com.joepritzel.feather.PSBroker;
+import com.joepritzel.feather.PSBrokerBuilder;
+import com.joepritzel.feather.Subscriber;
 
 public class CountTo100 {
 
@@ -52,7 +53,7 @@ public class CountTo100 {
 
 	public static void main(String[] args) {
 		int countTo = 100;
-		broker = new PSBroker(Executors.newSingleThreadExecutor());
+		broker = new PSBrokerBuilder().build();
 		broker.subscribe(new FinishedReader(), Finished.class);
 		broker.subscribe(new Counter(countTo), Integer.class);
 		broker.publish(0);

@@ -1,10 +1,21 @@
 package com.joepritzel.feather.strategy.publish;
 
-import com.joepritzel.feather.Subscriber;
 import com.joepritzel.feather.internal.Publish;
 
+/**
+ * 
+ * An interface for strategies for publishing messages.
+ * 
+ * @author Joe Pritzel
+ * 
+ */
 public interface PublishStrategy {
-	public void publish(Publish message);
 
-	public void invokeReceiveO(Subscriber<?> s, Object msg);
+	/**
+	 * Invoked when PSBroker's publish method is called.
+	 * 
+	 * @param message
+	 *            - The message to be published.
+	 */
+	public void publish(Publish message);
 }
