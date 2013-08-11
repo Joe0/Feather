@@ -21,7 +21,8 @@ public abstract class Subscriber<T> {
 	public abstract void receive(T message);
 
 	/**
-	 * A method that casts the message and calls the method that uses generics.
+	 * A method that casts the message and calls the method that uses generics.<br>
+	 * Do not overide.
 	 * 
 	 * @param o
 	 *            - The message that will be received by the subscriber.
@@ -29,7 +30,7 @@ public abstract class Subscriber<T> {
 	 *                the type the subscriber was bound to is incompatible with
 	 *                the type that is being received.
 	 */
-	void receiveO(Object o) {
+	public void receiveO(Object o) {
 		try {
 			@SuppressWarnings("unchecked")
 			T o2 = (T) o;

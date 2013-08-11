@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.WeakHashMap;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Executor;
 import java.util.concurrent.locks.ReentrantLock;
+
+import com.joepritzel.feather.internal.Publish;
+import com.joepritzel.feather.internal.SubscriberParent;
+import com.joepritzel.feather.strategy.publish.PublishStrategy;
 
 /**
  * A message broker that only supports the publish-subscribe pattern.
@@ -20,20 +22,14 @@ import java.util.concurrent.locks.ReentrantLock;
 public class PSBroker {
 
 	/**
-	 * The executor to use.
-	 */
-	private final Executor exec;
-
-	/**
-	 * A flag that is used to determine if the hierarchy of types should be
-	 * considered.
-	 */
-	private final boolean considerHierarchy;
-
-	/**
 	 * A mapping of message types to subscribers.
 	 */
-	private final ConcurrentHashMap<Class<?>, List<SubscriberParent>> mapping;
+	private final ConcurrentMap<Class<?>, List<SubscriberParent>> mapping;
+
+	/**
+	 * The strategy used for publishing messages.
+	 */
+	private final PublishStrategy publishStrategy;
 
 	/**
 	 * Creates a new broker with the given executor.
@@ -45,23 +41,9 @@ public class PSBroker {
 	 *            - If true, it will allow subscribers to receive messages that
 	 *            are subtypes of messages types they've subscribed to. -
 	 */
-	public PSBroker(Executor exec, boolean considerClassHierarchy) {
-		this.exec = exec;
-		this.mapping = new ConcurrentHashMap<Class<?>, List<SubscriberParent>>();
-		this.considerHierarchy = considerClassHierarchy;
-	}
-
-	/**
-	 * Creates a new broker with the given executor and matches types strictly.
-	 * 
-	 * @param exec
-	 *            - The executor that will be used to publish messages and that
-	 *            subscribers will run on.
-	 */
-	public PSBroker(Executor exec) {
-		this.exec = exec;
-		this.mapping = new ConcurrentHashMap<Class<?>, List<SubscriberParent>>();
-		this.considerHierarchy = false;
+	public PSBroker(ConcurrentMap<Class<?>, List<SubscriberParent>> mapping, PublishStrategy publish) {
+		this.mapping = mapping;
+		this.publishStrategy = publish;
 	}
 
 	/**
@@ -71,7 +53,7 @@ public class PSBroker {
 	 *            - The message to publish.
 	 */
 	public void publish(Object message) {
-		exec.execute(new Publish(message));
+		publishStrategy.publish(new Publish(this, mapping, message));
 	}
 
 	/**
@@ -199,70 +181,6 @@ public class PSBroker {
 			return p;
 		} finally {
 			parentLock.unlock();
-		}
-	}
-
-	/**
-	 * The runnable that handles finding subscribers and making sure their
-	 * receive method is called.
-	 */
-	private class Publish implements Runnable {
-
-		/**
-		 * The message to publish.
-		 */
-		private final Object message;
-
-		public Publish(Object message) {
-			this.message = message;
-		}
-
-		@Override
-		public void run() {
-			boolean sent = false;
-			if (considerHierarchy) {
-				for (Entry<Class<?>, List<SubscriberParent>> e : mapping
-						.entrySet()) {
-					if (e.getKey().isAssignableFrom(message.getClass())) {
-						for (SubscriberParent p : e.getValue()) {
-							p.getSubscriber().receiveO(message);
-							sent = true;
-						}
-					}
-				}
-			} else {
-				List<SubscriberParent> list = mapping.get(message.getClass());
-				if (list == null) {
-					return;
-				}
-				for (SubscriberParent sp : list) {
-					Subscriber<?> s = sp.getSubscriber();
-					if (s instanceof PredicatedSubscriber
-							&& !((PredicatedSubscriber<?>) s).appliesO(message)) {
-						continue;
-					}
-					s.receiveO(message);
-					sent = true;
-				}
-			}
-			if (!sent) {
-				publish(new UnreadMessage(message));
-			}
-		}
-	}
-	
-	/**
-	 * Used to mask generics.
-	 */
-	private class SubscriberParent {
-		private final Subscriber<?> s;
-
-		public SubscriberParent(Subscriber<?> subscriber) {
-			this.s = subscriber;
-		}
-
-		public Subscriber<?> getSubscriber() {
-			return s;
 		}
 	}
 }

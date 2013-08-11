@@ -22,7 +22,8 @@ public abstract class PredicatedSubscriber<T> extends Subscriber<T> {
 	public abstract boolean applies(T message);
 
 	/**
-	 * A method that casts the message and calls the method that uses generics.
+	 * A method that casts the message and calls the method that uses generics.<br>
+	 * Do not override.
 	 * 
 	 * @param o
 	 *            - The message.
@@ -32,7 +33,7 @@ public abstract class PredicatedSubscriber<T> extends Subscriber<T> {
 	 *                the type the subscriber was bound to is incompatible with
 	 *                the type that is being received.
 	 */
-	boolean appliesO(Object o) {
+	public boolean appliesO(Object o) {
 		try {
 			@SuppressWarnings("unchecked")
 			T o2 = (T) o;
