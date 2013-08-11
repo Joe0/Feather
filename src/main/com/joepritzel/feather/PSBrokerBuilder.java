@@ -29,18 +29,6 @@ public class PSBrokerBuilder {
 	}
 
 	/**
-	 * This will allow subscribers to receive messages that are subtypes of
-	 * messages types they've subscribed to.
-	 * 
-	 * @param considerHierarchy
-	 *            - If the class hierarchy should be considered.
-	 */
-	public PSBrokerBuilder considerClassHierarchy(boolean considerHierarchy) {
-		broker.considerHierarchy = considerHierarchy;
-		return this;
-	}
-
-	/**
 	 * Used to provide a strategy for publishing to the broker.
 	 * 
 	 * @param strategy

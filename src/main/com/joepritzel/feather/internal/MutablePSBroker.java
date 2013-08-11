@@ -17,9 +17,8 @@ import com.joepritzel.feather.strategy.subscribe.SubscribeStrategy;
  * 
  */
 public class MutablePSBroker {
-	public boolean considerHierarchy = false;
 	public PublishStrategy publishStrategy = new FewQuickListeners(
-			new ForkJoinPool(), considerHierarchy);
+			new ForkJoinPool(), false);
 	public ConcurrentMap<Class<?>, List<SubscriberParent>> mapping = new ConcurrentHashMap<Class<?>, List<SubscriberParent>>();
 	public SubscribeStrategy subscribeStrategy = new FastSubscribeUnsubscribe();
 }

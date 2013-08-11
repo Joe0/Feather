@@ -92,6 +92,56 @@ public class CountTo100 {
 	}
 }
 ```
+Example of how to have subscriptions check the class hierarchy out-of-the-box:
+```Java
+import java.util.concurrent.ForkJoinPool;
+
+import com.joepritzel.feather.PSBroker;
+import com.joepritzel.feather.PSBrokerBuilder;
+import com.joepritzel.feather.Subscriber;
+import com.joepritzel.feather.strategy.publish.FewQuickListeners;
+
+public class TestClassHierarchy {
+
+	public static void main(String[] args) throws InterruptedException {
+		// We can't use the default settings, so we need to specify
+		// the publish strategy. This requires an Executor and whether
+		// the class hierarchy should be considered or not.
+		PSBroker broker = new PSBrokerBuilder().publishStrategy(
+				new FewQuickListeners(new ForkJoinPool(), true)).build();
+		broker.subscribe(new TestClass(), ITest.class);
+		broker.publish(new ITestImpl());
+
+		while (true) {
+			Thread.sleep(1000);
+		}
+	}
+
+	private interface ITest {
+		public void print();
+	}
+
+	private static class ITestImpl implements ITest {
+
+		@Override
+		public void print() {
+			System.out.println("ITestImply message");
+		}
+
+	}
+
+	private static class TestClass extends Subscriber<ITest> {
+
+		@Override
+		public void receive(ITest message) {
+			System.out.println("TestClass message");
+			message.print();
+			System.exit(0);
+		}
+
+	}
+}
+```
 
 <h2 name="license">License</h2>
 This project is distributed under the terms of the MIT License. See file "LICENSE" for further information.
