@@ -6,6 +6,8 @@ Feather is an extremely lightweight publish-subscribe message broker (event bus)
 Table of contents:
 + [Features](#features)
 + [Usage](#usage)
+ - [Basics](#basics)
+ - [Examples](#examples)
 + [License](#license)
 
 <h2 name="features">Features</h2>
@@ -18,6 +20,7 @@ Table of contents:
 + <strong>Fast</strong> Faster than other publish-subscribe frameworks by orders of magnitude. Check out the <a href="http://www.joepritzel.com/blog/publish-subscribe" target="_blank">case study</a>.
 
 <h2 name="usage">Usage</h2>
+<h3 name="basics">Basics</h3>
 How to create the publish-subscribe message broker and set up for use:
 ```Java
 // Use a builder to create a new PSBroker.
@@ -41,6 +44,7 @@ Example of how to send a message that subscribers can receive:
 ```Java
 broker.publish("Hello world!");
 ```
+<h3 name="examples">Examples</h3>
 Example application that counts to 100:
 ```Java
 import com.joepritzel.feather.PSBroker;
