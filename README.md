@@ -6,8 +6,6 @@ Feather is an extremely lightweight publish-subscribe message broker (event bus)
 Table of contents:
 + [Features](#features)
 + [Usage](#usage)
- - [Basics](#basics)
- - [Examples](#examples)
 + [License](#license)
 
 <h2 name="features">Features</h2>
@@ -20,7 +18,6 @@ Table of contents:
 + <strong>Fast</strong> Faster than other publish-subscribe frameworks by orders of magnitude. Check out the <a href="http://www.joepritzel.com/blog/publish-subscribe" target="_blank">case study</a>.
 
 <h2 name="usage">Usage</h2>
-<h3 name="basics">Basics</h3>
 How to create the publish-subscribe message broker and set up for use:
 ```Java
 // Use a builder to create a new PSBroker.
@@ -44,108 +41,6 @@ Example of how to send a message that subscribers can receive:
 ```Java
 broker.publish("Hello world!");
 ```
-<h3 name="examples">Examples</h3>
-Example application that counts to 100:
-```Java
-import com.joepritzel.feather.PSBroker;
-import com.joepritzel.feather.PSBrokerBuilder;
-import com.joepritzel.feather.Subscriber;
-
-public class CountTo100 {
-
-	private static PSBroker broker;
-
-	public static void main(String[] args) {
-		int countTo = 100;
-		broker = new PSBrokerBuilder().build();
-		broker.subscribe(new FinishedReader(), Finished.class);
-		broker.subscribe(new Counter(countTo), Integer.class);
-		broker.publish(0);
-	}
-
-	private static class Finished {
-		public final int count;
-
-		public Finished(int count) {
-			this.count = count;
-		}
-	}
-
-	private static class Counter extends Subscriber<Integer> {
-		private final int max;
-
-		public Counter(int max) {
-			this.max = max;
-		}
-
-		@Override
-		public void receive(Integer i) {
-			if (i.intValue() == max) {
-				broker.publish(new Finished(i.intValue()));
-			} else {
-				broker.publish(i + 1);
-			}
-		}
-	}
-
-	private static class FinishedReader extends Subscriber<Finished> {
-		@Override
-		public void receive(Finished f) {
-			System.out.println("We finished at " + f.count);
-		}
-	}
-}
-```
-Example of how to have subscriptions check the class hierarchy out-of-the-box:
-```Java
-import java.util.concurrent.ForkJoinPool;
-
-import com.joepritzel.feather.PSBroker;
-import com.joepritzel.feather.PSBrokerBuilder;
-import com.joepritzel.feather.Subscriber;
-import com.joepritzel.feather.strategy.publish.FewQuickListeners;
-
-public class TestClassHierarchy {
-
-	public static void main(String[] args) throws InterruptedException {
-		// We can't use the default settings, so we need to specify
-		// the publish strategy. This requires an Executor and whether
-		// the class hierarchy should be considered or not.
-		PSBroker broker = new PSBrokerBuilder().publishStrategy(
-				new FewQuickListeners(new ForkJoinPool(), true)).build();
-		broker.subscribe(new TestClass(), ITest.class);
-		broker.publish(new ITestImpl());
-
-		while (true) {
-			Thread.sleep(1000);
-		}
-	}
-
-	private interface ITest {
-		public void print();
-	}
-
-	private static class ITestImpl implements ITest {
-
-		@Override
-		public void print() {
-			System.out.println("ITestImply message");
-		}
-
-	}
-
-	private static class TestClass extends Subscriber<ITest> {
-
-		@Override
-		public void receive(ITest message) {
-			System.out.println("TestClass message");
-			message.print();
-			System.exit(0);
-		}
-
-	}
-}
-```
-
+For complete examples, check out the examples in the src/example directory.
 <h2 name="license">License</h2>
 This project is distributed under the terms of the MIT License. See file "LICENSE" for further information.

@@ -9,7 +9,10 @@ import com.joepritzel.feather.strategy.publish.PublishStrategy;
 import com.joepritzel.feather.strategy.subscribe.SubscribeStrategy;
 
 /**
- * A builder for the PSBroker class.
+ * A builder for the PSBroker class.<br>
+ * <br>
+ * By default, it uses the Sequential publish strategy and the
+ * FastSubscribeUnsubscribe subscribe strategy.
  * 
  * @author Joe Pritzel
  * 
