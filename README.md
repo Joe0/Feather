@@ -3,6 +3,8 @@ Feather
 
 Feather is an extremely lightweight publish-subscribe message broker (event bus). It supports both topic (through types) and content (through a predicate) based filtering. The goal of Feather is to maximize message throughput.
 
+[![Build Status](https://travis-ci.org/Joe0/Feather.png?branch=master)](https://travis-ci.org/Joe0/Feather)
+
 Table of contents:
 + [Features](#features)
 + [Usage](#usage)
