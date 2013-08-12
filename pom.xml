@@ -33,7 +33,7 @@
 	</developers>
 
 	<properties>
-		<junit.version>4.8.2</junit.version>
+		<junit.version>4.11</junit.version>
 
 		<jdk.version>1.7</jdk.version>
 	</properties>

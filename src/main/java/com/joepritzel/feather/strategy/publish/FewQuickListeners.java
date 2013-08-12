@@ -53,7 +53,7 @@ public class FewQuickListeners implements PublishStrategy {
 				} else {
 					sent = normal(p);
 				}
-				if (!sent) {
+				if (!sent && p.mapping.containsKey(UnreadMessage.class)) {
 					p.broker.publish(new UnreadMessage(p.message));
 				}
 			}
