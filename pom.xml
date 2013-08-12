@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+	
+	<groupId>com.joepritzel</groupId>
+	<artifactId>feather</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+
+	<name>Feather</name>
+	<description>Ultra-lightweight publish-subscribe message broker.</description>
+	<url>https://github.com/Joe0/Feather</url>
+
+	<licenses>
+		<license>
+			<name>MIT</name>
+			<url>https://github.com/Joe0/Feather/blob/master/LICENSE</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Joe Pritzel</name>
+			<email>joe.pritzel0@gmail.com</email>
+			<timezone>-6</timezone>
+		</developer>
+	</developers>
+
+	<properties>
+		<junit.version>4.8.2</junit.version>
+
+		<jdk.version>1.7</jdk.version>
+	</properties>
+
+	<issueManagement>
+		<url>https://github.com/Joe0/Feather/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<scm>
+		<url>https://github.com/Joe0/Feather</url>
+		<connection>scm:git:git://github.com/Joe0/Feather.git</connection>
+		<developerConnection>scm:git:git@github.com:Joe0/Feather.git</developerConnection>
+	</scm>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
