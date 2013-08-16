@@ -26,7 +26,7 @@ How to create the publish-subscribe message broker and set up for use:
 // The builder allows you to provide customizable strategies for the broker to use.
 PSBroker broker = new PSBrokerBuilder().build();
 ```  
-Example of how to create a subscriber:
+How to create a subscriber:
 ```Java
 public class UnreadMessageReader extends Subscriber<UnreadMessage> {
 	@Override
@@ -35,11 +35,11 @@ public class UnreadMessageReader extends Subscriber<UnreadMessage> {
 	}
 }
 ```
-Example of how to let the broker know what messages a subscriber is listening to:
+How to let the broker know what messages a subscriber is listening to:
 ```Java
 broker.subscribe(new UnreadMessageReader(), UnreadMessage.class);
 ```
-Example of how to send a message that subscribers can receive:
+How to send a message that subscribers can receive:
 ```Java
 broker.publish("Hello world!");
 ```
