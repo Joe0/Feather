@@ -1,5 +1,6 @@
 package com.joepritzel.feather.strategy.subscribe;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,21 @@ import com.joepritzel.feather.internal.SubscriberParent;
  * 
  */
 public class FastSubscribeUnsubscribe implements SubscribeStrategy {
+
+	@Override
+	public void subscribe(
+			ConcurrentMap<Class<?>, List<SubscriberParent>> mapping,
+			Subscriber<?> subscriber) {
+		Class<?> type = null;
+		Method[] methods = subscriber.getClass().getDeclaredMethods();
+		for (Method m : methods) {
+			if (m.getName().equals("receive")
+					&& !m.isSynthetic() && !m.isBridge()) {
+				type = m.getParameterTypes()[0];
+			}
+		}
+		subscribe(mapping, subscriber, type);
+	}
 
 	@Override
 	public <T> void subscribe(

@@ -39,9 +39,9 @@ public class OverallCorrectnessTest {
 	 */
 	@Test
 	public void aTestValidSubscribe() {
-		broker.subscribe(intSub, Integer.class);
-		broker.subscribe(unreadSub, UnreadMessage.class);
-		broker.subscribe(pIntSub, Integer.class);
+		broker.subscribe(intSub);
+		broker.subscribe(unreadSub);
+		broker.subscribe(pIntSub);
 	}
 
 	/**

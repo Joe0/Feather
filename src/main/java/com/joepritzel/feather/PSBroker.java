@@ -49,6 +49,16 @@ public class PSBroker {
 	}
 
 	/**
+	 * Subscribes the subscriber to the type that is specified by the parameter
+	 * type of the receive method.
+	 * 
+	 * @param subscriber - The subscriber.
+	 */
+	public void subscribe(Subscriber<?> subscriber) {
+		subscribeStrategy.subscribe(mapping, subscriber);
+	}
+
+	/**
 	 * Subscribes the subscriber to the given type of message.
 	 * 
 	 * @param subscriber
@@ -88,7 +98,8 @@ public class PSBroker {
 	 */
 	public <S extends Subscriber<T>, T> boolean unsubscribeByTypes(
 			S subscriberType, Class<T> messageType) {
-		return subscribeStrategy.unsubscribeByTypes(mapping, subscriberType, messageType);
+		return subscribeStrategy.unsubscribeByTypes(mapping, subscriberType,
+				messageType);
 	}
 
 	/**

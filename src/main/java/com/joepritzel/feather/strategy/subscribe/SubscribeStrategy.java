@@ -18,6 +18,13 @@ public interface SubscribeStrategy {
 	/**
 	 * @see PSBroker#subscribe
 	 */
+	public void subscribe(
+			ConcurrentMap<Class<?>, List<SubscriberParent>> mapping,
+			Subscriber<?> subscriber);
+	
+	/**
+	 * @see PSBroker#subscribe
+	 */
 	public <T> void subscribe(
 			ConcurrentMap<Class<?>, List<SubscriberParent>> mapping,
 			Subscriber<?> subscriber, Class<T> messageType);
