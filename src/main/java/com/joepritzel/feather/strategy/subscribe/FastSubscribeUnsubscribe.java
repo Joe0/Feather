@@ -35,6 +35,7 @@ public class FastSubscribeUnsubscribe implements SubscribeStrategy {
 				break;
 			}
 		}
+		
 		List<SubscriberParent> list = new CopyOnWriteArrayList<>();
 		SubscriberParent p = getSubParent(subscriber);
 		list.add(p);
