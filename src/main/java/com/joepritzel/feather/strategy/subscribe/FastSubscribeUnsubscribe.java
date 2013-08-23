@@ -27,14 +27,20 @@ public class FastSubscribeUnsubscribe implements SubscribeStrategy {
 			ConcurrentMap<Class<?>, List<SubscriberParent>> mapping,
 			Subscriber<?> subscriber) {
 		Class<?> type = null;
-		Method[] methods = subscriber.getClass().getDeclaredMethods();
+		Method[] methods = subscriber.getClass().getMethods();
 		for (Method m : methods) {
-			if (m.getName().equals("receive")
-					&& !m.isSynthetic() && !m.isBridge()) {
+			if (m.getName().equals("receive") && !m.isSynthetic()
+					&& !m.isBridge()) {
 				type = m.getParameterTypes()[0];
+				break;
 			}
 		}
-		subscribe(mapping, subscriber, type);
+		List<SubscriberParent> list = new CopyOnWriteArrayList<>();
+		SubscriberParent p = getSubParent(subscriber);
+		list.add(p);
+		if (mapping.putIfAbsent(type, list) != null) {
+			mapping.get(type).add(p);
+		}
 	}
 
 	@Override
