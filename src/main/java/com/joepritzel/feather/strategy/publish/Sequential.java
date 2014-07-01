@@ -25,8 +25,6 @@ public class Sequential implements PublishStrategy {
 	private final boolean considerHierarchy;
 
 	/**
-	 * @param exec
-	 *            - The executor to be used.
 	 * @param considerHierarchy
 	 *            - If the class hierarchy should be considered when determining
 	 *            types a subscriber is subscribed to.

@@ -52,7 +52,8 @@ public class PSBroker {
 	 * Subscribes the subscriber to the type that is specified by the parameter
 	 * type of the receive method.
 	 * 
-	 * @param subscriber - The subscriber.
+	 * @param subscriber
+	 *            - The subscriber.
 	 */
 	public void subscribe(Subscriber<?> subscriber) {
 		subscribeStrategy.subscribe(mapping, subscriber);
@@ -61,6 +62,8 @@ public class PSBroker {
 	/**
 	 * Subscribes the subscriber to the given type of message.
 	 * 
+	 * @param <T>
+	 *            - The class to subscribe to.
 	 * @param subscriber
 	 *            - The subscriber.
 	 * @param messageType
@@ -76,6 +79,8 @@ public class PSBroker {
 	/**
 	 * Unsubscribes all subscribers listening to the given message type.
 	 * 
+	 * @param <T>
+	 *            - The type to unsubscribe from.
 	 * @param messageType
 	 *            - The type to unsubscribe all subscribers from.
 	 * @return Returns the list of subscribers that were forced to unsubscribe.
@@ -88,6 +93,10 @@ public class PSBroker {
 	 * Forces subscribers to unsubscribe based on the given subscriber type and
 	 * message type.
 	 * 
+	 * @param <S>
+	 *            - The type of subscriber to unsubscribe from.
+	 * @param <T>
+	 *            - The type of the subscriber.
 	 * @param subscriberType
 	 *            - The type of subscriber that will be forced to unsubscribe.
 	 * @param messageType
@@ -106,6 +115,8 @@ public class PSBroker {
 	 * Forces the given subscriber to unsubscribe from the given type of
 	 * messages.
 	 * 
+	 * @param <T>
+	 *            - The type to unsubscribe from.
 	 * @param s
 	 *            - The subscriber that will be forced to unsubscribe.
 	 * @param messageType
