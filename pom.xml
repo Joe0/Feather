@@ -9,7 +9,7 @@
 	
 	<groupId>com.joepritzel</groupId>
 	<artifactId>feather</artifactId>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.2</version>
 	<packaging>jar</packaging>
 
 	<name>Feather</name>
@@ -34,7 +34,7 @@
 	<properties>
 		<junit.version>4.11</junit.version>
 
-		<jdk.version>1.7</jdk.version>
+		<jdk.version>1.8</jdk.version>
 	</properties>
 
 	<issueManagement>
@@ -62,7 +62,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>3.1</version>
 				<configuration>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
